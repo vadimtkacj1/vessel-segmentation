@@ -6,19 +6,6 @@ This project implements a deep learning-based vessel segmentation system for eye
 
 The goal of this project is to perform semantic segmentation of blood vessels in retinal fundus images, distinguishing between background and vessel regions.
 
-## Dataset Structure
-
-The dataset should be organized as follows:
-dataset/
-├── train/
-│ ├── Original/ # Training images
-│ └── Ground truth/ # Training masks
-└── test/
-├── Original/ # Testing images
-└── Ground truth/ # Testing masks
-
-text
-
 ## Class Definitions
 
 - **Class 0**: Background `[0, 0, 0]`
