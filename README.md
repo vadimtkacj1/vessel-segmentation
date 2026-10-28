@@ -1,145 +1,38 @@
-# Vessel Segmentation Project
+# Retinal vessel segmentation
 
-This project implements a deep learning-based vessel segmentation system for eye fundus images using PyTorch and segmentation models.
+Pixel-level segmentation of blood vessels in retinal fundus photographs. Vessel maps like these are the input for screening diabetic retinopathy and other conditions where the vascular structure changes.
 
-## Project Overview
+![Original image, ground truth, prediction and vessel heatmap](assets/prediction.png)
 
-The goal of this project is to perform semantic segmentation of blood vessels in retinal fundus images, distinguishing between background and vessel regions.
+## Result
 
-## Class Definitions
+| Metric (test split) | Value |
+|---|---|
+| IoU | **0.944** |
+| Dice loss | 0.031 |
 
-- **Class 0**: Background `[0, 0, 0]`
-- **Class 1**: Vessel `[255, 255, 255]`
+![Another test sample](assets/prediction-2.png)
 
-## Key Features
+## Approach
 
-### Data Preprocessing
-- Albumentations for image augmentation
-- One-hot encoding for multi-class segmentation
-- Custom dataset class for handling fundus images
+- **Model:** DeepLabV3+ with a ResNet-101 encoder pre-trained on ImageNet ([segmentation-models-pytorch](https://github.com/qubvel/segmentation_models.pytorch))
+- **Input:** fundus images resized to 512 × 512, masks one-hot encoded into background and vessel
+- **Augmentation:** Albumentations — flips, shift / scale / rotate, elastic and grid distortion, perspective, CLAHE, gamma and brightness / contrast, blur, noise, colour shifts
+- **Training:** Dice loss, Adam, 50 epochs, the best checkpoint kept by validation IoU
 
-### Model Architecture
-- Uses Segmentation Models PyTorch (smp) library
-- Supports various encoder backbones
-- Multi-class segmentation capability
+![Train and validation Dice loss over 50 epochs](assets/training-curves.png)
 
-### Visualization Tools
-- Helper functions for image and mask visualization
-- Color coding for segmentation outputs
-- One-hot encoding/decoding utilities
+Validation loss tracks training loss closely through all 50 epochs, so the model is not overfitting the small training set.
 
-## Dependencies
+## Run
 
-- PyTorch & torchvision
-- Segmentation Models PyTorch
-- Albumentations
-- OpenCV
-- Matplotlib
-- NumPy
-- Pandas
+```bash
+uv sync
+uv run jupyter lab vessel-segmentation.ipynb
+```
 
-## Usage
+Set the dataset path in the **Path** cell. The notebook covers data loading, training, evaluation on the test split and visualisation of predictions.
 
-1. Set up the dataset paths in the notebook
-2. Configure model parameters and training settings
-3. Run the training pipeline
-4. Evaluate model performance
-5. Visualize results using provided helper functions
+## Stack
 
-## File Structure
-
-- `vessel-segmentation.ipynb`: Main notebook containing the complete pipeline
-- Dataset handling and preprocessing
-- Model definition and training
-- Evaluation and visualization
-
-## Results
-
-The model achieves vessel segmentation with the following capabilities:
-- Accurate delineation of blood vessels
-- Robust performance on fundus images
-- Support for both training and inference phases
-
-# Project Conclusion: Vessel Segmentation
-
-## Summary
-
-This vessel segmentation project successfully implements a comprehensive deep learning pipeline for segmenting blood vessels in retinal fundus images. The system demonstrates effective application of semantic segmentation techniques to medical imaging.
-
-## Key Achievements
-
-### 1. Robust Data Pipeline
-- Implemented custom dataset class for fundus images
-- Integrated comprehensive data augmentation using Albumentations
-- Established proper one-hot encoding for multi-class segmentation
-
-### 2. Effective Model Architecture
-- Leveraged Segmentation Models PyTorch for state-of-the-art architectures
-- Configured proper class definitions for vessel segmentation
-- Implemented appropriate preprocessing and normalization
-
-### 3. Comprehensive Visualization
-- Developed helper functions for result visualization
-- Implemented color coding for segmentation masks
-- Created utilities for one-hot encoding/decoding
-
-### 4. Modular Design
-- Well-organized code structure
-- Reusable components for data handling
-- Flexible model configuration
-
-## Technical Strengths
-
-### Data Handling
-- Proper separation of training and testing datasets
-- Support for standard medical image formats
-- Efficient data loading with PyTorch DataLoader
-
-### Preprocessing Pipeline
-- Albumentations integration for robust augmentation
-- Proper RGB value handling for segmentation masks
-- Flexible preprocessing configurations
-
-### Model Flexibility
-- Support for various encoder architectures
-- Configurable class definitions
-- Adaptable to different input sizes
-
-## Potential Applications
-
-1. **Medical Diagnosis**: Assist ophthalmologists in analyzing retinal vasculature
-2. **Disease Screening**: Early detection of diabetic retinopathy and other conditions
-3. **Research Tool**: Enable quantitative analysis of vessel structures
-4. **Clinical Studies**: Support large-scale epidemiological research
-
-## Future Enhancements
-
-### Immediate Improvements
-- Experiment with different backbone architectures (ResNet, EfficientNet)
-- Implement more sophisticated augmentation strategies
-- Add cross-validation for robust evaluation
-
-### Advanced Features
-- Integration with attention mechanisms
-- Multi-scale processing for better small vessel detection
-- Uncertainty estimation for predictions
-- Real-time inference capabilities
-
-### Deployment Considerations
-- Model optimization for edge devices
-- Docker containerization
-- REST API for easy integration
-- Web-based visualization interface
-
-## Challenges Addressed
-
-1. **Class Imbalance**: Proper handling of background vs vessel pixels
-2. **Image Variability**: Robust augmentation for different fundus image qualities
-3. **Precision Requirements**: High accuracy needed for medical applications
-4. **Computational Efficiency**: Balanced approach for training and inference
-
-## Conclusion
-
-This vessel segmentation project provides a solid foundation for medical image analysis tasks. The implementation follows best practices in deep learning and computer vision while being specifically tailored for the challenges of fundus image analysis. The modular design allows for easy extension and adaptation to similar medical segmentation tasks.
-
-The project successfully bridges the gap between research and practical application, offering a reliable tool for retinal vessel analysis that can be further developed for clinical use.
+PyTorch · segmentation-models-pytorch · Albumentations · OpenCV · NumPy · pandas · Matplotlib
