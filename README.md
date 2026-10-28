@@ -19,7 +19,7 @@ Both numbers come from `segmentation-models-pytorch` metrics on the two-channel 
 
 - **Model:** DeepLabV3+ with a ResNet-101 encoder pre-trained on ImageNet ([segmentation-models-pytorch](https://github.com/qubvel/segmentation_models.pytorch))
 - **Input:** fundus images resized to 512 × 512, masks one-hot encoded into background and vessel
-- **Augmentation:** Albumentations — flips, shift / scale / rotate, elastic and grid distortion, perspective, CLAHE, gamma and brightness / contrast, blur, noise, colour shifts
+- **Augmentation:** Albumentations with flips, shift / scale / rotate, elastic and grid distortion, perspective, CLAHE, gamma and brightness / contrast, blur, noise, colour shifts
 - **Training:** Dice loss, Adam, 50 epochs, the best checkpoint kept by validation IoU
 
 ![Train and validation Dice loss over 50 epochs](assets/training-curves.png)
