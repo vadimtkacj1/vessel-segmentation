@@ -8,8 +8,10 @@ Pixel-level segmentation of blood vessels in retinal fundus photographs. Vessel 
 
 | Metric (test split) | Value |
 |---|---|
-| IoU | **0.944** |
-| Dice loss | 0.031 |
+| Pixel IoU, averaged over background and vessel | 0.944 |
+| Dice loss, same averaging | 0.031 |
+
+Both numbers come from `segmentation-models-pytorch` metrics on the two-channel one-hot mask, so the background class (most of each image) is included and pulls them up. A vessel-only Dice and sensitivity on the test split is the next number to add.
 
 ![Another test sample](assets/prediction-2.png)
 
